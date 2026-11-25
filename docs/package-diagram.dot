@@ -1,0 +1,28 @@
+digraph Packages {
+  graph [rankdir=TB, fontname="Liberation Serif", fontsize=22, labelloc=t, nodesep=0.7, ranksep=0.95, pad=0.3, compound=true,
+         label=<<B>Діаграма пакетів системи автоматизації роботи магазину</B>>];
+  node  [fontname="Liberation Serif", fontsize=16, shape=tab, style="filled", fillcolor="#e3eefc:#c9ddf7", gradientangle=270, color="#3b78c3", penwidth=1.6, margin="0.25,0.15"];
+  edge  [fontname="Liberation Serif", fontsize=12, color="#333333", style=dashed, arrowhead=open, arrowsize=0.9];
+
+  Program [label=<<B>Program</B><BR/><FONT POINT-SIZE="12">«composition root»</FONT>>, fillcolor="#f3ecd2:#e6d9a8", color="#a08a2c"];
+
+  subgraph cluster_ui { label="Рівень подання"; style="rounded,dashed"; color="#888888"; fontname="Liberation Serif"; fontsize=14;
+    UI [label=<<B>UI</B>>]; }
+  subgraph cluster_app { label="Рівень застосунку"; style="rounded,dashed"; color="#888888"; fontname="Liberation Serif"; fontsize=14;
+    UseCases [label=<<B>UseCases</B>>]; Services [label=<<B>Services</B>>]; }
+  subgraph cluster_dom { label="Предметна область"; style="rounded,dashed"; color="#888888"; fontname="Liberation Serif"; fontsize=14;
+    Abstractions [label=<<B>Abstractions</B><BR/><FONT POINT-SIZE="12">IStoreRepository, IAuditLog</FONT>>, fillcolor="#e9f2dc:#d6e6bd", color="#6a9a2f"];
+    Models [label=<<B>Models</B><BR/><FONT POINT-SIZE="12">Models.States</FONT>>];
+    Rules [label=<<B>Rules</B>>]; }
+  subgraph cluster_inf { label="Рівень даних та інфраструктури"; style="rounded,dashed"; color="#888888"; fontname="Liberation Serif"; fontsize=14;
+    Data [label=<<B>Data</B>>, fillcolor="#fbe9e7:#f4cfca", color="#c0504d"];
+    Infrastructure [label=<<B>Infrastructure</B>>, fillcolor="#fbe9e7:#f4cfca", color="#c0504d"]; }
+
+  Program -> UI; Program -> UseCases; Program -> Services; Program -> Data; Program -> Infrastructure;
+  UI -> UseCases; UI -> Services; UI -> Abstractions; UI -> Models; UI -> Rules;
+  UseCases -> Abstractions; UseCases -> Models; UseCases -> Rules;
+  Services -> Abstractions; Services -> Models;
+  Abstractions -> Models;
+  Data -> Abstractions; Data -> Models; Data -> Rules;
+  Infrastructure -> Abstractions; Infrastructure -> Data; Infrastructure -> Models;
+}

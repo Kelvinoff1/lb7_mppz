@@ -1,0 +1,44 @@
+digraph OrderStates {
+  graph [rankdir=TB, fontname="Liberation Serif", fontsize=22, labelloc=t, nodesep=1.1, ranksep=1.15, pad=0.3,
+         label=<<B>Діаграма станів замовлення (Order)</B>>];
+  node  [fontname="Liberation Serif", fontsize=15, shape=plain];
+  edge  [fontname="Liberation Serif", fontsize=13, color="#222222", arrowsize=0.9];
+
+  start [shape=circle, label="", width=0.28, style=filled, fillcolor="#111111", color="#111111"];
+  end1 [shape=doublecircle, label="", width=0.26, style=filled, fillcolor="#111111", color="#111111", penwidth=1.5];
+
+  new [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0" STYLE="rounded">
+      <TR><TD CELLPADDING="7"><B>Нове</B></TD></TR>
+      <HR/>
+      <TR><TD ALIGN="LEFT" CELLPADDING="6"><FONT POINT-SIZE="13">додатиТовар(товар, кількість)<BR ALIGN="LEFT"/>[1 ≤ кількість ≤ 100 ∧ залишок ≥ кількість]<BR ALIGN="LEFT"/>/ списати товар зі складу<BR ALIGN="LEFT"/></FONT></TD></TR>
+    </TABLE>>, style="rounded,filled", fillcolor="#e3eefc:#c9ddf7", gradientangle=270, color="#3b78c3", shape=box, margin=0.04, penwidth=1.6];
+
+  paid [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
+      <TR><TD CELLPADDING="7"><B>Оплачене</B></TD></TR>
+      <HR/>
+      <TR><TD ALIGN="LEFT" CELLPADDING="6"><FONT POINT-SIZE="13">додатиТовар() / відхилити (BR-04)<BR ALIGN="LEFT"/></FONT></TD></TR>
+    </TABLE>>, style="rounded,filled", fillcolor="#e3eefc:#c9ddf7", gradientangle=270, color="#3b78c3", shape=box, margin=0.04, penwidth=1.6];
+
+  done [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
+      <TR><TD CELLPADDING="7"><B>Видане</B></TD></TR>
+      <HR/>
+      <TR><TD ALIGN="LEFT" CELLPADDING="6"><FONT POINT-SIZE="13">будь-яка зміна заборонена<BR ALIGN="LEFT"/></FONT></TD></TR>
+    </TABLE>>, style="rounded,filled", fillcolor="#e9f2dc:#d6e6bd", gradientangle=270, color="#6a9a2f", shape=box, margin=0.04, penwidth=1.6];
+
+  cancelled [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
+      <TR><TD CELLPADDING="7"><B>Скасоване</B></TD></TR>
+      <HR/>
+      <TR><TD ALIGN="LEFT" CELLPADDING="6"><FONT POINT-SIZE="13">entry / повернути товари на склад<BR ALIGN="LEFT"/>додатиТовар() / відхилити (BR-04)<BR ALIGN="LEFT"/></FONT></TD></TR>
+    </TABLE>>, style="rounded,filled", fillcolor="#fbe9e7:#f4cfca", gradientangle=270, color="#c0504d", shape=box, margin=0.04, penwidth=1.6];
+
+  start -> new  [label="  створити(покупець, співробітник, позиції)\l  [є хоча б одна позиція]\l  / створити замовлення\l"];
+  new -> paid   [label="  оплатити(спосіб)\l  [є позиції ∧ оплати ще немає]\l  / застосувати знижку, створити оплату\l"];
+  new -> cancelled [label="  скасувати()\l"];
+  paid -> done  [label="  видати()\l"];
+  done -> end1;
+  cancelled -> end1;
+}
